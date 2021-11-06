@@ -10,18 +10,31 @@ client_credentials_man = SpotifyClientCredentials(client_id, client_secret)
 auth_manager = SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
 
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_man, auth_manager=auth_manager)
+user_profile = sp.me()
 
-user_profile = sp.user("rribbsauce")
-print(user_profile)
+results = sp.current_user_saved_albums()
+my_albums = results['items']
 
-saba = sp.artist(saba_uri)
-print("The artist", saba["name"], "has released the following albums:")
-results = sp.artist_albums(saba_uri, album_type='album')
-saba_albums = results["items"]
+print(my_albums[0])
+# Since current_user_saved_albums() can only return x amount of 
+# items at a time, it stores a 'next' item that holds the url
+# of the 'next page' of items
+#while results['next']:
+#    results = sp.next(results)
+#    my_albums.extend(results['items'])
 
-while results['next']:
-    results = sp.next(results)
-    saba_albums.extend(results['items'])
+#for a in my_albums:
+#    print(a['album']['name'])
 
-for a in saba_albums:
-    print(a['name'])
+
+#saba = sp.artist(saba_uri)
+#print("The artist", saba["name"], "has released the following albums:")
+#results = sp.artist_albums(saba_uri, album_type='album')
+#saba_albums = results["items"]
+#
+#while results['next']:
+#    results = sp.next(results)
+#    saba_albums.extend(results['items'])
+#
+#for a in saba_albums:
+#    print(a['name'])
