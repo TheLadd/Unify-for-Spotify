@@ -10,22 +10,20 @@ client_credentials_man = SpotifyClientCredentials(client_id, client_secret)
 auth_manager = SpotifyOAuth(client_id, client_secret, redirect_uri, scope=scope)
 
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_man, auth_manager=auth_manager)
-user_profile = sp.me()
-
 results = sp.current_user_saved_albums()
 my_albums = results['items']
 
-print(my_albums[0])
 # Since current_user_saved_albums() can only return x amount of 
 # items at a time, it stores a 'next' item that holds the url
 # of the 'next page' of items
-#while results['next']:
-#    results = sp.next(results)
-#    my_albums.extend(results['items'])
+while results['next']:
+    results = sp.next(results)
+    my_albums.extend(results['items'])
 
-#for a in my_albums:
-#    print(a['album']['name'])
+for a in my_albums:
+    print(a['album']['name'])
 
+resuls = sp.cur
 
 #saba = sp.artist(saba_uri)
 #print("The artist", saba["name"], "has released the following albums:")
