@@ -1,0 +1,7 @@
+The goal of this project is to bring people together through shared
+interest in music. Using the Python Spotify API, the software will
+sift through two Spotify users' libraries and create a list of 
+artists/albums/songs/etc that the two users both listen to.
+
+The output of the program may be a simple list of shared genres/artists/etc,
+a playlist synthesized from the shared interests, 
