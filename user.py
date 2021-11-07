@@ -1,5 +1,5 @@
 import spotipy
-from spotipy import SpotifyClientCredentials, SpotifyOAuth
+from spotipy import SpotifyClientCredentials, SpotifyOAuth, SpotifyImplicitGrant
 import unifyInfo
 import misc
 
@@ -15,12 +15,16 @@ class User:
     top_tracks = []
     session = ""
     
-    def __init__(self, un, pw):
+    def __init__(self, un="EMPTY", pw="EMPTY"):
         self.username = un 
         self.password = pw
 
         # Have user authorize Unify to dig
-        unify_auth = SpotifyOAuth(unifyInfo.id, unifyInfo.secret, unifyInfo.redirect, scope=unifyInfo.scope)
+        unify_auth = SpotifyOAuth(unifyInfo.id, unifyInfo.secret, unifyInfo.redirect, 
+            scope=unifyInfo.scope, 
+            username=un,
+            open_browser=True)
+        #unify_auth = spotipy.util.prompt_for_user_token(un, unifyInfo.scope, unifyInfo.id, unifyInfo.secret, unifyInfo.redirect)
         sp = spotipy.Spotify(auth_manager=unify_auth)
 
         # Collect saved_albums
@@ -62,15 +66,14 @@ class User:
         # Collect top_songs
         results = sp.current_user_top_tracks()
         temp = misc.grabAll(results, sp)
-        print(results)
 
-        #for t in temp:
-        #    self.top_tracks.append(misc.trackToName(t))
+        for t in temp:
+            self.top_tracks.append(misc.artistToName(t))
 
-def test():
-    user1 = User("rribbsauce", "Hooplight1!")
 
-    for i in user1.top_artists:
-       print(i)
 
-test()
+#def test():
+#    user1 = User("rribbsauce", "Hooplight1!")
+#
+#    for i in user1.top_tracks:
+#       print(i)
